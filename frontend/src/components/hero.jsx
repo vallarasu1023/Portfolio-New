@@ -527,7 +527,7 @@ Download Cv
                 <i className="bi bi-geo-alt flex-shrink-0"><BsGeoAlt /></i>
                 <div>
                   <h3>Address</h3>
-                  <p>54/3 Nehru Nagar 2nd Street Alagappan Nagar Madurai</p>
+                 <p>54/3 Nehru Nagar 2nd Street TVS Nagar Madurai</p>
                 </div>
               </div>
 
