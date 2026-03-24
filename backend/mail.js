@@ -28,9 +28,10 @@ app.post('/submit-form', (req, res) => {
 
   transporter.sendMail(adminMailOptions, (err, info) => {
     if (err) {
-      return res.status(500).json({ message: 'Failed to send message to admin.' });
+      console.error('Email error:', err.message); // This will show in Render logs
+      return res.status(500).json({ message: err.message });
     }
-    return res.status(200).json({ message: 'Form submitted and email sent to admin.' });
+    return res.status(200).json({ message: 'Email sent successfully!' });
   });
 });
 
