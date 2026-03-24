@@ -11,7 +11,7 @@ import AOS from "aos";
 import { BsTelephone } from "react-icons/bs";
 import { BsGeoAlt } from "react-icons/bs";
 import { BsList } from 'react-icons/bs';
-import axios from 'axios'; // Import axios for making HTTP requests
+import emailjs from '@emailjs/browser'; // EmailJS instead of axios
 import profilepic from "../assets/profilebio.png"
 import smallprofile from "../assets/profile.1.png"
 import resume from "../assets/Vallarasu_Resume.pdf"
@@ -21,11 +21,6 @@ import afd from "../assets/postpage.png"
 import p2 from "../assets/Homepage.png"
 import p6 from '../assets/userpage.png'
 import pg from "../assets/blogspage.png"
-
-
-
-
-
 
 
 function Hero(){
@@ -53,23 +48,26 @@ const handleSubmit = async (e) => {
   setError("");
 
   try {
-    const response = await axios.post('https://portfolio-new-1-fe9x.onrender.com/submit-form', formData);
-
-    if (response.status === 200) {
-      setSent(true);
-      setFormData({ name: "", email: "", subject: "", message: "" });
-      setTimeout(() => setSent(false), 3000); // optional: hide success msg
-    } else {
-      setError("Something went wrong. Please try again.");
-    }
+    await emailjs.send(
+      'service_57u6aup',      // Service ID
+      'template_6e829yu',     // Template ID
+      {
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+      },
+      'wbKjD8fZOEJZ49OBD'     // Public Key
+    );
+    setSent(true);
+    setFormData({ name: "", email: "", subject: "", message: "" });
+    setTimeout(() => setSent(false), 3000);
   } catch (err) {
     setError("Something went wrong. Please try again.");
   } finally {
     setLoading(false);
   }
 };
-
-
 
 
 // Typed.js for typing animation
@@ -96,10 +94,6 @@ useEffect(() => {
 useEffect(() => {
   AOS.init({ duration: 1000 });
 }, []);
-
-// nav sections active state on scroll
-// const sections = document.querySelectorAll("section[id]");
-// const navLinks = document.querySelectorAll(".navmenu ul li a");
 
 useEffect(() => {
   AOS.init({
@@ -140,45 +134,42 @@ useEffect(() => {
 // Scroll-to-reveal logic
 useEffect(() => {
   const handleScroll = () => {
-    const sections = document.querySelectorAll("section:not(#home)"); // Select all sections except the home section
+    const sections = document.querySelectorAll("section:not(#home)");
     sections.forEach((section) => {
-      const rect = section.getBoundingClientRect(); // Get position of the section relative to the viewport
-      if (rect.top <= window.innerHeight - 100) { // Check if the section is in view
-        section.classList.add("fade-in"); // Add fade-in class to trigger animation
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= window.innerHeight - 100) {
+        section.classList.add("fade-in");
       }
     });
   };
 
-  window.addEventListener("scroll", handleScroll); // Listen for scroll events
-  handleScroll(); // Run on load to reveal sections already in view
+  window.addEventListener("scroll", handleScroll);
+  handleScroll();
 
-  return () => window.removeEventListener("scroll", handleScroll); // Cleanup event listener
+  return () => window.removeEventListener("scroll", handleScroll);
   
 }, []);
 
 
 useEffect(() => {
   const handleScroll = () => {
-    const blogPosts = document.querySelectorAll(".reveal"); // Select all reveal sections
+    const blogPosts = document.querySelectorAll(".reveal");
     blogPosts.forEach((post) => {
-      const rect = post.getBoundingClientRect(); // Get the position of each section
+      const rect = post.getBoundingClientRect();
       if (rect.top <= window.innerHeight - 100) {
-        post.classList.add("fade-in"); // Add fade-in class when in view
+        post.classList.add("fade-in");
       }
     });
   };
 
-  window.addEventListener("scroll", handleScroll); // Listen for scroll events
-  handleScroll(); // Run on load to reveal sections already in view
+  window.addEventListener("scroll", handleScroll);
+  handleScroll();
 
-  return () => window.removeEventListener("scroll", handleScroll); // Cleanup
+  return () => window.removeEventListener("scroll", handleScroll);
 }, []);
 
-//toogle 
 const toggleMenu = () => setMenuOpen(prev => !prev);
 const closeMenu = () => setMenuOpen(false);
-
-
 
 
        
@@ -188,7 +179,6 @@ return(
       id="header"
       className={`header dark-background d-flex flex-column${menuOpen ? ' header-show' : ''}`}
     >
-      {/* Toggler icon on responsive devices */}
       <div className="header-toggle" onClick={toggleMenu}>
         {menuOpen ? <BsX /> : <BsList />}
       </div>
@@ -252,8 +242,6 @@ return(
   <main className="main ">
 
   <section id="hero" className="hero section dark-background ">
-      {/* <img src={background} alt="" data-aos="fade-in" className="" /> */}
-
       <div className="container" data-aos="fade-up" data-aos-delay="100">
         <h2>Vallarasu</h2>
         <p>
@@ -262,16 +250,15 @@ return(
         </p>
       </div>
       </section>
-      {/* <!-- /Hero Section --> */}
-      <section id="about" className="about section reveal ">
 
+      <section id="about" className="about section reveal ">
 
 <div className="container section-title" data-aos="fade-up">
   <h2>About</h2>
   <p> I'm a Full Stack MERN Developer with a passion for building web applications. 
     I have hands-on experience with MongoDB, Express.js, React.js, and Node.js. As a fresher, 
     I'm eager to learn, grow, and create useful and user-friendly websites. 
-    I enjoy coding, solving problems, and working on real-world projects..</p>
+    I enjoy coding, solving problems, and working on real-world projects..</p>
 </div>
 <div className="container" data-aos="fade-up" data-aos-delay="100">
 
@@ -311,7 +298,7 @@ return(
   </div>
 </div>
 </section>
-{/* about end */}
+
 <section id="skills" className="skills section  light-background">
       <div className="container" data-aos="fade-up">
         <div className="section-title">
@@ -366,7 +353,7 @@ return(
       <div className="container section-title" data-aos="fade-up">
         <h2>Resume</h2>
         <p>Download my resume to learn more about my educational background, skills, 
-          and the projects I’ve worked on as I begin my career journey.</p>
+          and the projects I've worked on as I begin my career journey.</p>
           </div>
       <div className="container">
         <div className="row">
@@ -401,7 +388,6 @@ return(
             <div className="resume-item">
               <h4>1.RAPIDO CLONE (MY CREATIVE EXPERIENCE)</h4>
               <h5>2025</h5>
-              {/* <p><em>Experion, New York, NY </em></p> */}
               <ul>
                 <li> Built a responsive clone of the Rapido bike taxi booking platform using HTML, CSS3, JavaScript, jQuery, and Bootstrap.
                      The project replicates key features such as ride booking UI, fare estimates, location input, and responsive layouts. 
@@ -456,8 +442,6 @@ Download Cv
           </div>
         </div>
       </div>
-
-
 
       <div className="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
         <div className="portfolio-content h-100">
@@ -617,7 +601,6 @@ Download Cv
             ></textarea>
           </div>
           <div className="text-center">
-        {/* Show success message */}
         {sent && (
           <div className="sent-message">
             <strong>Your message has been sent.</strong>
@@ -625,15 +608,13 @@ Download Cv
           </div>
         )}
 
-        {/* Show error message */}
         {error && <div className="error-message">{error}</div>}
 
-        {/* Submit button with spinner */}
         <button type="submit" disabled={loading} className="submit-btn">
           {loading ? (
-            <div className="loading-spinner inside-btn"></div> // Spinner inside button
+            <div className="loading-spinner inside-btn"></div>
           ) : (
-            "Send Message" // Text when not loading
+            "Send Message"
           )}
         </button>
       </div>
@@ -644,26 +625,19 @@ Download Cv
       </div>
     </section>    
 </main>
-{/* foooter */}
 
 <footer id="footer" class="footer position-relative light-background">
 
 <div class="container footer-fade-in">
   <div class="copyright text-center">
     <p>© 2025 <strong class="px-1 sitename">Vallarasu S</strong> | <span class="highlight">Full Stack Mern Developer</span></p>
-    <p>Thanks for visiting my portfolio. Let’s stay connected through my <span class="highlight">social profiles</span>.</p>
+    <p>Thanks for visiting my portfolio. Let's stay connected through my <span class="highlight">social profiles</span>.</p>
   </div>
 </div>
 
-
-
 </footer>
 
-
   </div>
-  
-  
-
 )
 }  
 export default Hero
