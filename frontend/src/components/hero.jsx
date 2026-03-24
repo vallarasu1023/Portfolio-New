@@ -53,7 +53,7 @@ const handleSubmit = async (e) => {
   setError("");
 
   try {
-    const response = await axios.post('http://localhost:10000/submit-form', formData);
+    const response = await axios.post('https://portfolio-new-1-fe9x.onrender.com/submit-form', formData);
 
     if (response.status === 200) {
       setSent(true);
