@@ -11,29 +11,25 @@ app.use(bodyParser.json());
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'vallarasusaravanakumar@gmail.com',
-    pass: 'zdst gald crmx zmjw', // App password (not real password)
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 });
 
 app.post('/submit-form', (req, res) => {
   const { name, email, subject, message } = req.body;
 
-  // Admin email options
   const adminMailOptions = {
-    from: 'vallarasusaravanakumar@gmail.com',
-    to: 'vallarasusaravanakumar@gmail.com',
+    from: process.env.EMAIL_USER,
+    to: process.env.EMAIL_USER,
     subject: `New Contact Form Submission: ${subject}`,
     text: `Name: ${name}\nEmail: ${email}\nMessage:\n${message}`,
   };
 
-  // Send email to admin
   transporter.sendMail(adminMailOptions, (err, info) => {
     if (err) {
       return res.status(500).json({ message: 'Failed to send message to admin.' });
     }
-
-    // Send success response to frontend
     return res.status(200).json({ message: 'Form submitted and email sent to admin.' });
   });
 });
