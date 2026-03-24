@@ -14,7 +14,6 @@ import { BsList } from 'react-icons/bs';
 import axios from 'axios'; // Import axios for making HTTP requests
 import profilepic from "../assets/profilebio.png"
 import smallprofile from "../assets/profile.1.png"
-import background from "../assets/photo.jpeg"
 import resume from "../assets/Vallarasu_Resume.pdf"
 import p4 from "../assets/Signuppage.png"
 import p1 from "../assets/imaagepage.png"
